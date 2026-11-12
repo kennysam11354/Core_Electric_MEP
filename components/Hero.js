@@ -1,19 +1,51 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export default function Hero({ dict }) {
+    const heroRef = useRef(null);
+    const [isHeroVisible, setIsHeroVisible] = useState(true);
+    const headlineParts = dict.headline.split("Contractor");
+    const highlightsContractor = headlineParts.length === 2;
+    const titleWords = highlightsContractor ? headlineParts[0].trim().split(/\s+/) : [];
+    const titleLines = !highlightsContractor
+        ? dict.headline.trim().split("\n").map((line) => line.trim().split(/\s+/))
+        : [];
+
+    useEffect(() => {
+        const hero = heroRef.current;
+        if (!hero) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsHeroVisible(entry.isIntersecting),
+            { threshold: 0.45 }
+        );
+
+        observer.observe(hero);
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <section id="hero" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-primary">
-            {/* Background image and contrast overlay */}
-            <div className="absolute inset-0" aria-hidden="true">
-                <Image
-                    src="/hero-manhattan-mep.png"
-                    alt=""
-                    fill
-                    preload
-                    sizes="100vw"
-                    className="object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-primary/75 md:bg-transparent md:bg-linear-to-r md:from-primary/95 md:via-primary/70 md:to-primary/20"></div>
+        <section id="hero" ref={heroRef} className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-primary">
+            <Image
+                src="/hero-manhattan-mep.png"
+                alt=""
+                fill
+                preload
+                sizes="(max-aspect-ratio: 1916/821) 234vh, 100vw"
+                className="object-cover"
+            />
+            <div
+                aria-hidden="true"
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(90deg, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.64) 42%, rgba(15, 23, 42, 0.25) 72%, rgba(15, 23, 42, 0.14) 100%)" }}
+            ></div>
+
+            {/* Background decoration */}
+            <div className="absolute inset-0 opacity-20">
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent rounded-full filter blur-3xl"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary rounded-full filter blur-3xl"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -24,9 +56,49 @@ export default function Hero({ dict }) {
                     </div>
 
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
-                        {dict.headline.split("Contractor")[0]}
-                        <span className="text-secondary tracking-tight">Contractor</span>
-                        {dict.headline.split("Contractor")[1]}
+                        {highlightsContractor ? (
+                            <>
+                                {titleWords.map((word, index) => (
+                                    <span
+                                        key={`${word}-${index}`}
+                                        className={`hero-title-word${isHeroVisible ? " is-visible" : ""}`}
+                                        style={{ animationDelay: `${index * 75}ms` }}
+                                    >
+                                        {word}&nbsp;
+                                    </span>
+                                ))}
+                                <span
+                                    className={`text-secondary tracking-tight hero-title-word${isHeroVisible ? " is-visible" : ""}`}
+                                    style={{ animationDelay: `${titleWords.length * 75}ms` }}
+                                >
+                                    Contractor
+                                </span>
+                                {headlineParts[1]}
+                            </>
+                        ) : (
+                            titleLines.map((line, lineIndex) => {
+                                const priorWords = titleLines
+                                    .slice(0, lineIndex)
+                                    .reduce((count, previousLine) => count + previousLine.length, 0);
+
+                                return (
+                                    <span key={`title-line-${lineIndex}`}>
+                                        {line.map((word, wordIndex) => (
+                                            <span key={`${word}-${wordIndex}`}>
+                                                <span
+                                                    className={`hero-title-word${isHeroVisible ? " is-visible" : ""}`}
+                                                    style={{ animationDelay: `${(priorWords + wordIndex) * 75}ms` }}
+                                                >
+                                                    {word}
+                                                </span>
+                                                {wordIndex < line.length - 1 ? " " : null}
+                                            </span>
+                                        ))}
+                                        {lineIndex < titleLines.length - 1 && <br />}
+                                    </span>
+                                );
+                            })
+                        )}
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed max-w-2xl">
@@ -41,7 +113,7 @@ export default function Hero({ dict }) {
                             {dict.ctaPrimary}
                         </a>
                         <a
-                            href="#about"
+                            href="#qualifications"
                             className="px-8 py-4 bg-transparent border-2 border-white/30 hover:border-white text-white font-bold text-lg rounded-md transition-all text-center"
                         >
                             {dict.ctaSecondary}

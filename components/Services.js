@@ -59,21 +59,39 @@ export default function Services({ dict }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {dict.list.map((service, index) => (
-                        <div key={index} className="p-8 bg-gray-50 border border-gray-100 rounded-xl hover:shadow-xl transition-all duration-300 hover:border-secondary/20 group">
-                            <div className="bg-primary text-secondary p-4 rounded-lg inline-block mb-6 group-hover:bg-secondary group-hover:text-primary transition-colors duration-300">
-                                {serviceIcons[index]}
+                        <div
+                            key={index}
+                            className="relative p-8 border border-gray-100 rounded-xl hover:shadow-xl transition-all duration-300 hover:border-secondary/20 group overflow-hidden"
+                            style={{
+                                backgroundColor: "#25354d",
+                                backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px)",
+                                backgroundSize: "20px 20px",
+                            }}
+                        >
+                            <div className="relative z-10">
+                                <div className="flex items-start justify-between mb-7">
+                                    <span className="text-sm font-bold tracking-widest text-secondary">{String(index + 1).padStart(2, "0")}</span>
+                                    <div className="relative items-center justify-center text-secondary border border-secondary/20 rounded-2xl overflow-hidden group-hover:bg-secondary group-hover:text-primary group-hover:border-secondary transition-colors duration-300" style={{ width: "4rem", height: "4rem", display: "inline-flex", backgroundColor: "#16243a", borderColor: "rgba(245, 158, 11, 0.55)" }}>
+                                        <span aria-hidden="true" className="absolute top-0 right-0 w-5 h-5 bg-secondary/20 rounded-bl-2xl group-hover:bg-primary/30 transition-colors"></span>
+                                        {serviceIcons[index]}
+                                    </div>
+                                </div>
+                                <div className="w-12 h-1 bg-secondary mb-5 group-hover:w-20 transition-all duration-300"></div>
+                                <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
+                                <ul className="space-y-3">
+                                    {service.items.map((item, idx) => (
+                                        <li key={idx} className="flex items-start text-gray-300">
+                                            <span className="w-5 h-5 rounded-md bg-secondary/10 flex items-center justify-center mr-3 mt-0.5 shrink-0">
+                                                <svg className="w-3.5 h-3.5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                            <h3 className="text-2xl font-bold text-primary mb-4">{service.title}</h3>
-                            <ul className="space-y-3">
-                                {service.items.map((item, idx) => (
-                                    <li key={idx} className="flex items-start text-gray-600">
-                                        <svg className="w-5 h-5 text-secondary mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            <span aria-hidden="true" className="absolute bottom-0 left-0 bg-secondary transition-all duration-300 group-hover:w-full" style={{ width: "2.5rem", height: "0.2rem" }}></span>
                         </div>
                     ))}
                 </div>

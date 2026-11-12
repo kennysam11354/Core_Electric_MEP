@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
+import Clients from "@/components/Clients";
 import LocalLawSection from "@/components/LocalLawSection";
 import Industries from "@/components/Industries";
 import About from "@/components/About";
@@ -10,9 +11,13 @@ import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Commercial Electrical Contractor NJ & NY | Core Electric MEP Industries",
+  title: "CORE ELECTRIC MEP INDUSTRIES | Electrical Contractor",
   description:
-    "Professional commercial electrical services for retail, warehouse, and industrial projects in New Jersey and New York Metro Area. Licensed, insured, and experienced.",
+    "Electrical contractor serving commercial, residential, and public sector projects across New York.",
+  robots: {
+    index: false,
+    follow: false,
+  },
   alternates: {
     canonical: "/",
     languages: {
@@ -31,6 +36,7 @@ export default function Home() {
       <Hero dict={dict.hero} />
       <Services dict={dict.services} />
       <Projects dict={dict.projects} />
+      <Clients dict={dict.clients} />
       <LocalLawSection dict={dict.localLaw} />
       <Industries dict={dict.industries} />
       <About dict={dict.about} />

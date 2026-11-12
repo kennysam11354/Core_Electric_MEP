@@ -50,17 +50,9 @@ export default function ContactForm({ dict }) {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-primary">{dict.leadershipTitle}</h4>
-                                    <div className="mt-2">
-                                        <p className="text-primary font-bold">{dict.president.title}: {dict.president.name}</p>
-                                        <a href={`tel:${dict.president.phone}`} className="text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.president.phone}</a>
-                                        <span className="text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.president.email}</span>
-                                    </div>
-                                    <div className="mt-4">
-                                        <p className="text-primary font-bold">{dict.pm.title}: {dict.pm.name}</p>
-                                        <a href={`tel:${dict.pm.phone}`} className="text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.pm.phone}</a>
-                                        <span className="text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.pm.email}</span>
-                                    </div>
+                                    <h4 className="font-bold text-primary">{dict.email}</h4>
+                                    <span className="mt-2 text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.mainEmail}</span>
+                                    <a href={`tel:${dict.phone}`} className="text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.phone}</a>
                                 </div>
                             </div>
                         </div>
@@ -161,15 +153,12 @@ export default function ContactForm({ dict }) {
                                     ></textarea>
                                 </div>
 
-                                <p role="status" className="text-sm text-gray-300">
-                                    {dict.form.disabledMessage}
-                                </p>
                                 <button
                                     type="button"
                                     disabled
-                                    className="w-full py-4 bg-secondary hover:bg-amber-600 text-primary font-bold text-lg rounded-xl transition-all shadow-xl active:scale-[0.98] disabled:opacity-50 flex items-center justify-center space-x-2 cursor-pointer disabled:cursor-not-allowed"
+                                    className="w-full py-4 bg-secondary hover:bg-amber-600 text-primary font-bold text-lg rounded-xl transition-all shadow-xl active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer disabled:cursor-not-allowed"
                                 >
-                                    <span>{dict.form.disabledSubmit}</span>
+                                    <span>{dict.form.submit}</span>
                                 </button>
                             </form>
                         </div>

@@ -1,28 +1,5 @@
 import Image from "next/image";
 
-const projects = [
-    {
-        title: "Dollar General Store Electrical Rollout",
-        location: "Northern New Jersey",
-        description: "Complete electrical infrastructure for retail chain expansion",
-    },
-    {
-        title: "Warehouse Distribution Center",
-        location: "Newark, NJ",
-        description: "50,000 sq ft electrical system installation with energy-efficient lighting",
-    },
-    {
-        title: "Retail Store Build-Out",
-        location: "Manhattan, NY",
-        description: "Fast-track electrical installation for flagship store opening",
-    },
-    {
-        title: "Corporate Office Renovation",
-        location: "Jersey City, NJ",
-        description: "Modern electrical upgrade including smart building controls",
-    },
-];
-
 export default function Projects({ dict }) {
     return (
         <section id="projects" className="py-24 bg-primary text-white overflow-hidden">

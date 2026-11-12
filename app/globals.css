@@ -1,3 +1,4 @@
+@import "./reference-base.css";
 @import "tailwindcss";
 
 @theme {
@@ -8,20 +9,7 @@
   --color-text-primary: #0f172a;
   --color-text-secondary: #64748b;
   
-  --font-inter: var(--font-inter);
-}
-
-:root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
