@@ -16,7 +16,12 @@ export const metadata = {
   description:
     "Professional commercial electrical contractor serving New Jersey and New York. Retail, warehouse, and commercial electrical installation and maintenance.",
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.png?v=2", type: "image/png", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 

@@ -19,9 +19,6 @@ export const metadata = {
             ko: "/ko",
         },
     },
-    icons: {
-        icon: "/favicon.png",
-    },
 };
 
 export default function Home() {
