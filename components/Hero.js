@@ -1,10 +1,19 @@
+import Image from "next/image";
+
 export default function Hero({ dict }) {
     return (
         <section id="hero" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-primary">
-            {/* Background decoration */}
-            <div className="absolute inset-0 opacity-20">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent rounded-full filter blur-3xl"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary rounded-full filter blur-3xl"></div>
+            {/* Background image and contrast overlay */}
+            <div className="absolute inset-0" aria-hidden="true">
+                <Image
+                    src="/hero-manhattan-mep.png"
+                    alt=""
+                    fill
+                    preload
+                    sizes="100vw"
+                    className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-primary/75 md:bg-transparent md:bg-linear-to-r md:from-primary/95 md:via-primary/70 md:to-primary/20"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
