@@ -27,7 +27,7 @@ export default function Hero({ dict }) {
     }, []);
 
     return (
-        <section id="hero" ref={heroRef} className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-primary">
+        <section id="hero" ref={heroRef} className="relative min-h-screen flex items-center pt-20 pb-32 lg:pb-0 overflow-hidden bg-primary">
             <Image
                 src="/hero-manhattan-mep.png"
                 alt=""
@@ -50,9 +50,18 @@ export default function Hero({ dict }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
                 <div className="max-w-3xl">
-                    <div className="inline-block px-4 py-2 mb-6 text-sm font-bold tracking-wider bg-secondary/10 border border-secondary/20 rounded-xl">
-                        <span className="block text-secondary uppercase mb-1">{dict.ribbon.title}</span>
-                        <span className="block text-gray-300 font-medium normal-case">{dict.ribbon.desc}</span>
+                    <div className="mb-6 flex flex-wrap items-center gap-3">
+                        <div className="max-w-full px-4 py-2 text-sm font-bold tracking-wider bg-secondary/10 border border-secondary/20 rounded-xl">
+                            <span className="block text-secondary uppercase mb-1">{dict.ribbon.title}</span>
+                            <span className="block text-gray-300 font-medium normal-case">{dict.ribbon.desc}</span>
+                        </div>
+                        <span className="inline-flex shrink-0 items-center gap-2.5 rounded-xl border border-secondary/40 bg-primary/75 px-4 py-3 text-sm font-bold tracking-wider text-secondary backdrop-blur-sm">
+                            <svg aria-hidden="true" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                                <circle cx="9" cy="7" r="4" />
+                            </svg>
+                            {dict.union}
+                        </span>
                     </div>
 
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
