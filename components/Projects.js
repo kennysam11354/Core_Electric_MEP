@@ -2,12 +2,12 @@ import Image from "next/image";
 
 export default function Projects({ dict }) {
     return (
-        <section id="projects" className="py-24 bg-primary text-white overflow-hidden">
+        <section id="projects" aria-labelledby="projects-title" className="py-24 bg-primary text-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <div className="max-w-2xl">
-                        <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</h2>
-                        <p className="text-3xl md:text-5xl font-bold">{dict.title}</p>
+                        <p className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</p>
+                        <h2 id="projects-title" className="text-3xl md:text-5xl font-bold tracking-normal">{dict.title}</h2>
                     </div>
                     <div className="text-gray-400 max-w-sm">
                         <p>{dict.subtitle}</p>

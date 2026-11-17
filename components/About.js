@@ -1,14 +1,14 @@
 export default function About({ dict }) {
     return (
-        <section id="about" className="py-24 bg-primary text-white overflow-hidden relative">
+        <section id="about" aria-labelledby="about-title" className="py-24 bg-primary text-white overflow-hidden relative">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-1/3 h-full bg-secondary/5 skew-x-12 transform translate-x-1/2"></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>
-                        <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</h2>
-                        <p className="text-3xl md:text-5xl font-bold mb-8">{dict.title}</p>
+                        <p className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</p>
+                        <h2 id="about-title" className="text-3xl md:text-5xl font-bold mb-8 tracking-normal">{dict.title}</h2>
 
                         <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                             {dict.content.map((paragraph, index) => (

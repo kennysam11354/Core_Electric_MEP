@@ -34,3 +34,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## SEO configuration
+
+- The canonical production origin is `https://www.coreelectricmep.com`. Company details, language metadata, and JSON-LD are maintained in `lib/seo.js`.
+- `/` and `/ko` have separate canonical URLs and reciprocal `en`, `ko`, and `x-default` language links.
+- `/robots.txt` allows crawling and points to `/sitemap.xml`. The sitemap lists the two canonical pages.
+- `/opengraph-image` generates the branded 1200 × 630 sharing image from the existing hero photograph.
+- The previous Wix paths `/services`, `/projects`, `/about-us`, and `/get-a-quote` redirect permanently to their corresponding homepage sections.
+
+After deployment, verify that the primary domain serves the new site, submit `https://www.coreelectricmep.com/sitemap.xml` in Google Search Console, and inspect both language URLs. Search Console verification and indexing requests require the domain owner's account. Vercel preview deployments can retain Vercel's own `noindex` header; check the primary production domain when verifying indexing settings.

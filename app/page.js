@@ -1,4 +1,5 @@
 import { dictionaries } from "@/lib/dictionary";
+import { createPageMetadata } from "@/lib/seo";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
@@ -10,22 +11,7 @@ import About from "@/components/About";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
-export const metadata = {
-  title: "CORE ELECTRIC MEP INDUSTRIES | Electrical Contractor",
-  description:
-    "Electrical contractor serving commercial, residential, and public sector projects across New York.",
-  robots: {
-    index: false,
-    follow: false,
-  },
-  alternates: {
-    canonical: "/",
-    languages: {
-      en: "/",
-      ko: "/ko",
-    },
-  },
-};
+export const metadata = createPageMetadata("en");
 
 export default function Home() {
   const dict = dictionaries.en;

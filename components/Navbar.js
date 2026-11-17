@@ -52,12 +52,14 @@ export default function Navbar({ dict, lang = "en" }) {
                             >
                                 {dict.cta}
                             </a>
-                            <Link
+                            <a
                                 href={lang === "ko" ? "/" : "/ko"}
+                                hrefLang={lang === "ko" ? "en" : "ko"}
+                                lang={lang === "ko" ? "en" : "ko"}
                                 className="text-sm font-bold text-secondary border border-secondary px-3 py-1.5 rounded hover:bg-secondary hover:text-primary transition-all ml-4"
                             >
                                 {dict.switchLang}
-                            </Link>
+                            </a>
                         </div>
                     </div>
 
@@ -105,13 +107,15 @@ export default function Navbar({ dict, lang = "en" }) {
                     >
                         {dict.cta}
                     </a>
-                    <Link
+                    <a
                         href={lang === "ko" ? "/" : "/ko"}
+                        hrefLang={lang === "ko" ? "en" : "ko"}
+                        lang={lang === "ko" ? "en" : "ko"}
                         onClick={() => setIsOpen(false)}
                         className="block w-full text-center border border-secondary text-secondary hover:bg-secondary hover:text-primary px-3 py-3 rounded-md text-base font-bold mt-2"
                     >
                         {dict.switchLang}
-                    </Link>
+                    </a>
                 </div>
             </div>
         </nav>

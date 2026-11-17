@@ -22,12 +22,12 @@ export default function ContactForm({ dict }) {
     };
 
     return (
-        <section id="contact" className="py-24 bg-background-custom">
+        <section id="contact" aria-labelledby="contact-title" className="py-24 bg-background-custom">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                     <div>
-                        <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</h2>
-                        <p className="text-3xl md:text-5xl font-bold text-primary mb-8">{dict.title}</p>
+                        <p className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</p>
+                        <h2 id="contact-title" className="text-3xl md:text-5xl font-bold text-primary mb-8 tracking-normal">{dict.title}</h2>
 
                         <div className="space-y-8 mb-12">
                             <div className="flex items-start">
@@ -38,7 +38,7 @@ export default function ContactForm({ dict }) {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-primary">{dict.hq}</h4>
+                                    <h3 className="font-bold text-primary">{dict.hq}</h3>
                                     <p className="text-gray-600">{dict.address}</p>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@ export default function ContactForm({ dict }) {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-primary">{dict.email}</h4>
+                                    <h3 className="font-bold text-primary">{dict.email}</h3>
                                     <span className="mt-2 text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.mainEmail}</span>
                                     <a href={`tel:${dict.phone}`} className="text-gray-600 text-sm hover:text-secondary transition-colors block">{dict.phone}</a>
                                 </div>

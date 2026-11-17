@@ -1,5 +1,7 @@
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
+import StructuredData from "@/components/StructuredData";
+import { createPageMetadata, site } from "@/lib/seo";
 import "./globals.css";
 import "./hero-animation.css";
 
@@ -10,9 +12,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "CORE ELECTRIC MEP INDUSTRIES | Electrical Contractor",
-  description:
-    "Electrical contractor serving commercial, residential, and public sector projects across New York.",
+  metadataBase: new URL(site.url),
+  applicationName: site.name,
+  ...createPageMetadata("en"),
   icons: {
     icon: [
       { url: "/favicon.png?v=4", type: "image/png", sizes: "48x48" },
@@ -30,6 +32,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={lang} className={inter.variable}>
       <body>
+        <StructuredData lang={lang} />
         {children}
       </body>
     </html>

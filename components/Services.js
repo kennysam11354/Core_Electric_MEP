@@ -49,11 +49,11 @@ const serviceIcons = [
 
 export default function Services({ dict }) {
     return (
-        <section id="services" className="py-24 bg-white">
+        <section id="services" aria-labelledby="services-title" className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</h2>
-                    <p className="text-3xl md:text-5xl font-bold text-primary">{dict.title}</p>
+                    <p className="text-sm font-bold tracking-widest text-secondary uppercase mb-2">{dict.badge}</p>
+                    <h2 id="services-title" className="text-3xl md:text-5xl font-bold text-primary tracking-normal">{dict.title}</h2>
                     <div className="w-20 h-1.5 bg-secondary mx-auto mt-6"></div>
                 </div>
 

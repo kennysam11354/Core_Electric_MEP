@@ -3,12 +3,12 @@ import { certifications } from "@/lib/clients";
 
 export default function LocalLawSection({ dict }) {
     return (
-        <section id="qualifications" className="py-24 bg-gray-50">
+        <section id="qualifications" aria-labelledby="qualifications-title" className="py-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 flex flex-col lg:flex-row">
                     <div className="lg:w-1/2 p-8 md:p-16 flex flex-col justify-center">
-                        <h2 className="text-sm font-bold tracking-widest text-accent uppercase mb-2">{dict.badge}</h2>
-                        <p className="text-3xl md:text-5xl font-bold text-primary mb-6">{dict.title}</p>
+                        <p className="text-sm font-bold tracking-widest text-accent uppercase mb-2">{dict.badge}</p>
+                        <h2 id="qualifications-title" className="text-3xl md:text-5xl font-bold text-primary mb-6 tracking-normal">{dict.title}</h2>
                         <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                             {dict.subtext}
                         </p>
