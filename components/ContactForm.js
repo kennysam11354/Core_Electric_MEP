@@ -55,6 +55,34 @@ export default function ContactForm({ dict }) {
         }
     };
 
+    if (status === "success") {
+        return (
+            <section id="contact" aria-labelledby="contact-success-title" className="py-16 md:py-24 bg-background-custom">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div role="status" className="relative overflow-hidden min-h-[520px] md:min-h-[680px] rounded-[2.5rem] bg-primary px-6 py-16 md:p-20 shadow-2xl flex flex-col items-center justify-center text-center">
+                        <div className="relative z-10 flex flex-col items-center">
+                            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-10 md:mb-12">
+                                <svg aria-hidden="true" className="w-14 h-14 md:w-16 md:h-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="m5 12 5 5L19 8" />
+                                </svg>
+                            </div>
+                            <h2 id="contact-success-title" className="text-3xl md:text-4xl font-bold text-white tracking-normal">{dict.form.success}</h2>
+                            <p className="mt-8 max-w-2xl text-lg md:text-2xl leading-relaxed text-gray-200">{dict.form.successDesc}</p>
+                            <button
+                                type="button"
+                                onClick={() => setStatus("idle")}
+                                className="mt-12 md:mt-14 rounded-2xl bg-secondary px-8 md:px-10 py-4 md:py-5 text-lg md:text-2xl font-bold text-primary shadow-xl transition-colors hover:bg-amber-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary cursor-pointer"
+                            >
+                                {dict.form.another}
+                            </button>
+                        </div>
+                        <div aria-hidden="true" className="absolute -bottom-24 -right-24 w-64 h-64 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
     return (
         <section id="contact" aria-labelledby="contact-title" className="py-24 bg-background-custom">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -203,12 +231,6 @@ export default function ContactForm({ dict }) {
                                 >
                                     <span>{status === "sending" ? dict.form.sending : dict.form.submit}</span>
                                 </button>
-                                {status === "success" && (
-                                    <div role="status" className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-400">
-                                        <p className="font-bold">{dict.form.success}</p>
-                                        <p className="mt-1">{dict.form.successDesc}</p>
-                                    </div>
-                                )}
                                 {status === "error" && (
                                     <p role="alert" className="rounded-xl border border-red-500/50 bg-red-500/20 p-4 text-sm text-red-200">{errorMessage}</p>
                                 )}
