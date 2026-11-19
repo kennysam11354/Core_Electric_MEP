@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function ContactForm({ dict }) {
+export default function ContactForm({ dict, language }) {
     const [formData, setFormData] = useState({
         company: "",
         name: "",
@@ -15,6 +15,11 @@ export default function ContactForm({ dict }) {
     const [status, setStatus] = useState("idle");
     const [errorMessage, setErrorMessage] = useState("");
     const inFlight = useRef(false);
+    const confirmationHeading = useRef(null);
+
+    useEffect(() => {
+        if (status === "success") confirmationHeading.current?.focus();
+    }, [status]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,7 +37,7 @@ export default function ContactForm({ dict }) {
             const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, language }),
             });
             const result = await response.json();
             if (!response.ok || !result.ok) {
@@ -54,34 +59,6 @@ export default function ContactForm({ dict }) {
             inFlight.current = false;
         }
     };
-
-    if (status === "success") {
-        return (
-            <section id="contact" aria-labelledby="contact-success-title" className="py-16 md:py-24 bg-background-custom">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div role="status" className="relative overflow-hidden min-h-[520px] md:min-h-[680px] rounded-[2.5rem] bg-primary px-6 py-16 md:p-20 shadow-2xl flex flex-col items-center justify-center text-center">
-                        <div className="relative z-10 flex flex-col items-center">
-                            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-10 md:mb-12">
-                                <svg aria-hidden="true" className="w-14 h-14 md:w-16 md:h-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="m5 12 5 5L19 8" />
-                                </svg>
-                            </div>
-                            <h2 id="contact-success-title" className="text-3xl md:text-4xl font-bold text-white tracking-normal">{dict.form.success}</h2>
-                            <p className="mt-8 max-w-2xl text-lg md:text-2xl leading-relaxed text-gray-200">{dict.form.successDesc}</p>
-                            <button
-                                type="button"
-                                onClick={() => setStatus("idle")}
-                                className="mt-12 md:mt-14 rounded-2xl bg-secondary px-8 md:px-10 py-4 md:py-5 text-lg md:text-2xl font-bold text-primary shadow-xl transition-colors hover:bg-amber-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary cursor-pointer"
-                            >
-                                {dict.form.another}
-                            </button>
-                        </div>
-                        <div aria-hidden="true" className="absolute -bottom-24 -right-24 w-64 h-64 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
-                    </div>
-                </div>
-            </section>
-        );
-    }
 
     return (
         <section id="contact" aria-labelledby="contact-title" className="py-24 bg-background-custom">
@@ -125,117 +102,136 @@ export default function ContactForm({ dict }) {
                     </div>
 
                     <div className="bg-primary p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
-                        <div className="relative z-10">
-                            <form onSubmit={handleSubmit} aria-busy={status === "sending"} className="space-y-6">
-                                <div className="hidden" aria-hidden="true">
-                                    <label htmlFor="website">Website</label>
-                                    <input id="website" name="website" tabIndex={-1} autoComplete="off" value={formData.website} onChange={handleChange} />
+                        {status === "success" ? (
+                            <div className="relative z-10 flex min-h-[320px] md:min-h-[376px] flex-col items-center justify-center text-center">
+                                <div aria-hidden="true" className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                                    <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="m5 12 5 5L19 8" />
+                                    </svg>
                                 </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label htmlFor="company" className="block text-gray-400 text-sm font-bold mb-2">{dict.form.company}</label>
-                                        <input
-                                            type="text"
-                                            id="company"
-                                            name="company"
-                                            maxLength={160}
-                                            value={formData.company}
-                                            onChange={handleChange}
-                                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="name" className="block text-gray-400 text-sm font-bold mb-2">
-                                            {dict.form.name} <span className="text-secondary">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="name"
-                                            name="name"
-                                            maxLength={120}
-                                            required
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label htmlFor="email" className="block text-gray-400 text-sm font-bold mb-2">
-                                            {dict.form.email} <span className="text-secondary">*</span>
-                                        </label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            maxLength={254}
-                                            required
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="phone" className="block text-gray-400 text-sm font-bold mb-2">
-                                            {dict.form.phone} <span className="text-secondary">*</span>
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            id="phone"
-                                            name="phone"
-                                            maxLength={40}
-                                            required
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label htmlFor="projectType" className="block text-gray-400 text-sm font-bold mb-2">{dict.form.projectType}</label>
-                                    <select
-                                        id="projectType"
-                                        name="projectType"
-                                        value={formData.projectType}
-                                        onChange={handleChange}
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors appearance-none"
-                                    >
-                                        <option value="installation" className="bg-primary">{dict.form.options.installation}</option>
-                                        <option value="maintenance" className="bg-primary">{dict.form.options.maintenance}</option>
-                                        <option value="consultation" className="bg-primary">{dict.form.options.consultation}</option>
-                                        <option value="emergency" className="bg-primary">{dict.form.options.emergency}</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label htmlFor="description" className="block text-gray-400 text-sm font-bold mb-2">{dict.form.description}</label>
-                                    <textarea
-                                        id="description"
-                                        name="description"
-                                            maxLength={6000}
-                                        rows="4"
-                                        value={formData.description}
-                                        onChange={handleChange}
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors resize-none"
-                                    ></textarea>
-                                </div>
-
+                                <h3 ref={confirmationHeading} tabIndex={-1} className="scroll-mt-24 text-2xl font-bold text-white tracking-normal outline-none">{dict.form.success}</h3>
+                                <p className="mt-4 max-w-sm leading-relaxed text-gray-200">{dict.form.successDesc}</p>
                                 <button
-                                    type="submit"
-                                    disabled={status === "sending"}
-                                    className="w-full py-4 bg-secondary hover:bg-amber-600 text-primary font-bold text-lg rounded-xl transition-all shadow-xl active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer disabled:cursor-not-allowed"
+                                    type="button"
+                                    onClick={() => setStatus("idle")}
+                                    className="mt-8 rounded-xl bg-secondary px-6 py-3 font-bold text-primary shadow-xl transition-colors hover:bg-amber-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary cursor-pointer"
                                 >
-                                    <span>{status === "sending" ? dict.form.sending : dict.form.submit}</span>
+                                    {dict.form.another}
                                 </button>
-                                {status === "error" && (
-                                    <p role="alert" className="rounded-xl border border-red-500/50 bg-red-500/20 p-4 text-sm text-red-200">{errorMessage}</p>
-                                )}
-                            </form>
-                        </div>
+                            </div>
+                        ) : (
+                            <div className="relative z-10">
+                                <form onSubmit={handleSubmit} aria-busy={status === "sending"} className="space-y-6">
+                                    <div className="hidden" aria-hidden="true">
+                                        <label htmlFor="website">Website</label>
+                                        <input id="website" name="website" tabIndex={-1} autoComplete="off" value={formData.website} onChange={handleChange} />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label htmlFor="company" className="block text-gray-400 text-sm font-bold mb-2">{dict.form.company}</label>
+                                            <input
+                                                type="text"
+                                                id="company"
+                                                name="company"
+                                                maxLength={160}
+                                                value={formData.company}
+                                                onChange={handleChange}
+                                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="name" className="block text-gray-400 text-sm font-bold mb-2">
+                                                {dict.form.name} <span className="text-secondary">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="name"
+                                                name="name"
+                                                maxLength={120}
+                                                required
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label htmlFor="email" className="block text-gray-400 text-sm font-bold mb-2">
+                                                {dict.form.email} <span className="text-secondary">*</span>
+                                            </label>
+                                            <input
+                                                type="email"
+                                                id="email"
+                                                name="email"
+                                                maxLength={254}
+                                                required
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="phone" className="block text-gray-400 text-sm font-bold mb-2">
+                                                {dict.form.phone} <span className="text-secondary">*</span>
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                id="phone"
+                                                name="phone"
+                                                maxLength={40}
+                                                required
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="projectType" className="block text-gray-400 text-sm font-bold mb-2">{dict.form.projectType}</label>
+                                        <select
+                                            id="projectType"
+                                            name="projectType"
+                                            value={formData.projectType}
+                                            onChange={handleChange}
+                                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors appearance-none"
+                                        >
+                                            <option value="installation" className="bg-primary">{dict.form.options.installation}</option>
+                                            <option value="maintenance" className="bg-primary">{dict.form.options.maintenance}</option>
+                                            <option value="consultation" className="bg-primary">{dict.form.options.consultation}</option>
+                                            <option value="emergency" className="bg-primary">{dict.form.options.emergency}</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="description" className="block text-gray-400 text-sm font-bold mb-2">{dict.form.description}</label>
+                                        <textarea
+                                            id="description"
+                                            name="description"
+                                                maxLength={6000}
+                                            rows="4"
+                                            value={formData.description}
+                                            onChange={handleChange}
+                                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors resize-none"
+                                        ></textarea>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={status === "sending"}
+                                        className="w-full py-4 bg-secondary hover:bg-amber-600 text-primary font-bold text-lg rounded-xl transition-all shadow-xl active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer disabled:cursor-not-allowed"
+                                    >
+                                        <span>{status === "sending" ? dict.form.sending : dict.form.submit}</span>
+                                    </button>
+                                    {status === "error" && (
+                                        <p role="alert" className="rounded-xl border border-red-500/50 bg-red-500/20 p-4 text-sm text-red-200">{errorMessage}</p>
+                                    )}
+                                </form>
+                            </div>
+                        )}
 
                         {/* Form background decoration */}
                         <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>

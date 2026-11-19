@@ -26,7 +26,7 @@ export default function Home() {
             <LocalLawSection dict={dict.localLaw} />
             <Industries dict={dict.industries} />
             <About dict={dict.about} />
-            <ContactForm dict={dict.contact} />
+            <ContactForm dict={dict.contact} language="ko" />
             <Footer dict={dict.footer} lang="ko" />
         </main>
     );
