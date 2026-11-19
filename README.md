@@ -44,3 +44,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - The previous Wix paths `/services`, `/projects`, `/about-us`, and `/get-a-quote` redirect permanently to their corresponding homepage sections.
 
 After deployment, verify that the primary domain serves the new site, submit `https://www.coreelectricmep.com/sitemap.xml` in Google Search Console, and inspect both language URLs. Search Console verification and indexing requests require the domain owner's account. Vercel preview deployments can retain Vercel's own `noindex` header; check the primary production domain when verifying indexing settings.
+
+## Contact form / Resend
+
+- Set the server-only RESEND_API_KEY in the ignored .env.local and separately in Vercel Production. Never give it a NEXT_PUBLIC_ prefix.
+- Fixed recipient: multizerllc@gmail.com. Default sender: Core Electric MEP <info@coreelectricmep.com>. Optional server-only RESEND_FROM overrides the sender.
+- The visitor email is Reply-To only; visitors cannot select recipients or senders.
+- Origin, input limits, a honeypot and best-effort per-instance throttling protect the route. The five-attempt/ten-minute limit is not shared across serverless instances.
+- Run node --test tests/contact.test.mjs to test validation and transport with mocked Resend responses.
+- Local secrets do not configure Vercel; production needs its environment variable and a subsequent deployment.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function ContactForm({ dict }) {
     const [formData, setFormData] = useState({
@@ -10,15 +10,49 @@ export default function ContactForm({ dict }) {
         phone: "",
         projectType: "installation",
         description: "",
+        website: "",
     });
+    const [status, setStatus] = useState("idle");
+    const [errorMessage, setErrorMessage] = useState("");
+    const inFlight = useRef(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        if (!inFlight.current) setStatus("idle");
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        if (inFlight.current) return;
+        inFlight.current = true;
+        setStatus("sending");
+        setErrorMessage("");
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) {
+                setErrorMessage(response.status === 429
+                    ? dict.form.rateLimit
+                    : [413, 422].includes(response.status) ? dict.form.validationError : dict.form.errorMessage);
+                setStatus("error");
+                return;
+            }
+            setStatus("success");
+            setFormData({
+                company: "", name: "", email: "", phone: "",
+                projectType: "installation", description: "", website: "",
+            });
+        } catch {
+            setErrorMessage(dict.form.errorMessage);
+            setStatus("error");
+        } finally {
+            inFlight.current = false;
+        }
     };
 
     return (
@@ -64,7 +98,11 @@ export default function ContactForm({ dict }) {
 
                     <div className="bg-primary p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
                         <div className="relative z-10">
-                            <form onSubmit={handleSubmit} className="space-y-6">
+                            <form onSubmit={handleSubmit} aria-busy={status === "sending"} className="space-y-6">
+                                <div className="hidden" aria-hidden="true">
+                                    <label htmlFor="website">Website</label>
+                                    <input id="website" name="website" tabIndex={-1} autoComplete="off" value={formData.website} onChange={handleChange} />
+                                </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
@@ -73,6 +111,7 @@ export default function ContactForm({ dict }) {
                                             type="text"
                                             id="company"
                                             name="company"
+                                            maxLength={160}
                                             value={formData.company}
                                             onChange={handleChange}
                                             className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-secondary transition-colors"
@@ -86,6 +125,7 @@ export default function ContactForm({ dict }) {
                                             type="text"
                                             id="name"
                                             name="name"
+                                            maxLength={120}
                                             required
                                             value={formData.name}
                                             onChange={handleChange}
@@ -103,6 +143,7 @@ export default function ContactForm({ dict }) {
                                             type="email"
                                             id="email"
                                             name="email"
+                                            maxLength={254}
                                             required
                                             value={formData.email}
                                             onChange={handleChange}
@@ -117,6 +158,7 @@ export default function ContactForm({ dict }) {
                                             type="tel"
                                             id="phone"
                                             name="phone"
+                                            maxLength={40}
                                             required
                                             value={formData.phone}
                                             onChange={handleChange}
@@ -146,6 +188,7 @@ export default function ContactForm({ dict }) {
                                     <textarea
                                         id="description"
                                         name="description"
+                                            maxLength={6000}
                                         rows="4"
                                         value={formData.description}
                                         onChange={handleChange}
@@ -154,12 +197,21 @@ export default function ContactForm({ dict }) {
                                 </div>
 
                                 <button
-                                    type="button"
-                                    disabled
+                                    type="submit"
+                                    disabled={status === "sending"}
                                     className="w-full py-4 bg-secondary hover:bg-amber-600 text-primary font-bold text-lg rounded-xl transition-all shadow-xl active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer disabled:cursor-not-allowed"
                                 >
-                                    <span>{dict.form.submit}</span>
+                                    <span>{status === "sending" ? dict.form.sending : dict.form.submit}</span>
                                 </button>
+                                {status === "success" && (
+                                    <div role="status" className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-400">
+                                        <p className="font-bold">{dict.form.success}</p>
+                                        <p className="mt-1">{dict.form.successDesc}</p>
+                                    </div>
+                                )}
+                                {status === "error" && (
+                                    <p role="alert" className="rounded-xl border border-red-500/50 bg-red-500/20 p-4 text-sm text-red-200">{errorMessage}</p>
+                                )}
                             </form>
                         </div>
 
