@@ -48,8 +48,8 @@ After deployment, verify that the primary domain serves the new site, submit `ht
 ## Contact form / Resend
 
 - Set the server-only RESEND_API_KEY in the ignored .env.local and separately in Vercel Production. Never give it a NEXT_PUBLIC_ prefix.
-- Fixed recipient: multizerllc@gmail.com. Default sender: Core Electric MEP <info@coreelectricmep.com>. Optional server-only RESEND_FROM overrides the sender.
-- The visitor email is Reply-To only; visitors cannot select recipients or senders.
+- Fixed primary recipient: info@coreelectricmep.com. Fixed CC: multizerllc@gmail.com. Default sender: Core Electric MEP <info@coreelectricmep.com>. Optional server-only RESEND_FROM overrides the sender.
+- The visitor email is Reply-To only; visitors cannot select recipients, CC, or sender.
 - Origin, input limits, a honeypot and best-effort per-instance throttling protect the route. The five-attempt/ten-minute limit is not shared across serverless instances.
 - Run node --test tests/contact.test.mjs to test validation and transport with mocked Resend responses.
 - Local secrets do not configure Vercel; production needs its environment variable and a subsequent deployment.

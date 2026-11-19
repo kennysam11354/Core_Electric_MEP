@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateContact, sendContactEmail, CONTACT_RECIPIENT } from "../lib/contact.mjs";
+import { validateContact, sendContactEmail, CONTACT_RECIPIENT, CONTACT_CC } from "../lib/contact.mjs";
 
 const inquiry = {
     company: " Example Company ",
@@ -12,11 +12,12 @@ const inquiry = {
 };
 
 test("normalizes inquiry data and ignores recipient overrides", () => {
-    const result = validateContact({ ...inquiry, to: "attacker@example.com" });
+    const result = validateContact({ ...inquiry, to: "attacker@example.com", cc: "attacker@example.com" });
     assert.equal(result.name, "Test Customer");
     assert.equal(result.company, "Example Company");
     assert.equal(result.description, inquiry.description);
     assert.equal(result.to, undefined);
+    assert.equal(result.cc, undefined);
 });
 
 test("rejects missing fields, header injection, invalid types and oversized input", () => {
@@ -30,7 +31,7 @@ test("rejects missing fields, header injection, invalid types and oversized inpu
     ]) assert.equal(validateContact(input), null);
 });
 
-test("uses the fixed Gmail recipient, verified sender and customer Reply-To", async () => {
+test("uses the fixed company recipient, Gmail CC, verified sender and customer Reply-To", async () => {
     let payload;
     const id = await sendContactEmail(validateContact(inquiry), {
         apiKey: "unit-test-not-a-real-key",
@@ -43,7 +44,9 @@ test("uses the fixed Gmail recipient, verified sender and customer Reply-To", as
     });
     assert.equal(id, "test-message-id");
     assert.deepEqual(payload.to, [CONTACT_RECIPIENT]);
-    assert.equal(CONTACT_RECIPIENT, "multizerllc@gmail.com");
+    assert.equal(CONTACT_RECIPIENT, "info@coreelectricmep.com");
+    assert.deepEqual(payload.cc, [CONTACT_CC]);
+    assert.equal(CONTACT_CC, "multizerllc@gmail.com");
     assert.equal(payload.from, "Core Electric MEP <info@coreelectricmep.com>");
     assert.equal(payload.reply_to, inquiry.email);
     assert.match(payload.text, /Commercial Electrical/);
